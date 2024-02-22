@@ -4,20 +4,21 @@ import axios, { AxiosResponse } from "axios";
 interface ApiResponseType<T> {
   list: T[];
   valid: boolean;
+  message?: string;
 }
 
 // 제네릭을 선언해 axios의 인자 값을 유연성 있게 처리
 export const UseAxios = async <T>(
   url: string,
   type: "POST" | "GET",
-  data?: object
+  params?: object
 ): Promise<ApiResponseType<T>> => {
   try {
-    let response: AxiosResponse<T>;
+    let response: AxiosResponse;
 
     switch (type) {
       case "POST":
-        response = await axios.post<T>(url, data);
+        response = await axios.post<T>(url, params);
         break;
 
       case "GET":
@@ -26,9 +27,17 @@ export const UseAxios = async <T>(
     }
 
     if (response.status === 200) {
-      return { list: [response.data], valid: true };
+      return {
+        list: [response.data],
+        valid: response.data.success,
+        message: response.data.success,
+      };
     } else {
-      return { list: [], valid: false };
+      return {
+        list: [],
+        valid: response.data.success,
+        message: response.data.message,
+      };
     }
   } catch (error) {
     return {
