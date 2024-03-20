@@ -9,10 +9,9 @@ import Home from "pages/Home";
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Register />} index />{" "}
+      <Route path="/" element={<Home />} index />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/home" element={<Home />} />
     </Routes>
   );
 }

@@ -30,19 +30,20 @@ export const UseAxios = async <T>(
       return {
         list: [response.data],
         valid: response.data.success,
-        message: response.data.success,
+        message: response.data.message,
       };
     } else {
       return {
         list: [],
-        valid: response.data.success,
-        message: response.data.message,
+        valid: false,
       };
     }
-  } catch (error) {
+  } catch (error: any) {
+    // 200이 아닌 상태코드는 모두 catch 문이 실행된다
     return {
       list: [],
-      valid: false,
+      valid: error.response.data.success,
+      message: error.response.data.message,
     };
   }
 };

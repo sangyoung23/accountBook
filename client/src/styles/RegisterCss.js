@@ -8,7 +8,12 @@ export const RegisterDiv = styled.div`
   border-radius: 5px;
 `;
 
-export const RegisterP = styled.p`
+export const RegisterPred = styled.p`
   font-size: 12px;
   color: rgb(210, 37, 37);
+`;
+
+export const RegisterPblue = styled.p`
+  font-size: 12px;
+  color: #368ef2;
 `;

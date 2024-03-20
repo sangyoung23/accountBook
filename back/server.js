@@ -28,17 +28,41 @@ app.listen(PORT, () => {
 
 // 기본 static 주소 설정하기
 
-// app.post("/api/users/insert", (req, res) => {
-//   const { userId, userName, passWord } = req.body;
+// 회원가입
+app.post("/api/users/insert", (req, res) => {
+  const { userId, userName, passWord } = req.body;
 
-//   const sql =
-//     "INSERT INTO users (`userId`, `userName`, `userPwd`) VALUES (?, ?, ?)";
+  const sql =
+    "INSERT INTO users (`userId`, `userName`, `userPwd`) VALUES (?, ?, ?)";
 
-//   db.query(sql, [userId, userName, passWord], (err, result) => {
-//     if (err) {
-//       res.status(500).json({ success: false, message: err });
-//     } else {
-//       res.status(200).send({ success: true });
-//     }
-//   });
-// });
+  db.query(sql, [userId, userName, passWord], (err, result) => {
+    if (err) {
+      res.status(500).json({ success: false, message: err });
+    } else {
+      res.status(200).send({ success: true });
+    }
+  });
+});
+
+// 아이디 중복 검사
+app.post("/api/users/find", (req, res) => {
+  const { userId } = req.body;
+
+  const sql = "SELECT * FROM users WHERE userId = ?";
+
+  db.query(sql, [userId], (err, result) => {
+    if (err) {
+      res.status(500).send("Internal Server Error", err);
+    } else {
+      if (result.length > 0) {
+        res
+          .status(401)
+          .send({ success: false, message: "중복된 아이디입니다." });
+      } else {
+        res
+          .status(200)
+          .send({ success: true, message: "사용 가능한 아이디입니다." });
+      }
+    }
+  });
+});

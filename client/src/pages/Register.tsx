@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, useRef } from "react";
-import { RegisterDiv, RegisterP } from "styles/RegisterCss";
+import { RegisterDiv, RegisterPred, RegisterPblue } from "styles/RegisterCss";
 import { UseAxios } from "composables/Axios";
 import { UseAlert } from "composables/Alert";
 import Form from "react-bootstrap/Form";
@@ -14,7 +14,7 @@ interface RegisterType {
 
 function Register() {
   const [samePwd, setSamePwd] = useState(false);
-  const [isIdAvailable, setIsIdAvailable] = useState(false);
+  const [isIdAvailable, setIsIdAvailable] = useState("");
   const [register, setRegister] = useState<RegisterType>({
     userName: "",
     userId: "",
@@ -24,9 +24,9 @@ function Register() {
   const { userName, userId, passWord, passWordCheck } = register;
 
   const nameInput = useRef<HTMLInputElement | null>(null);
-  const idInput = useRef<HTMLInputElement>(null);
-  const pwdInput = useRef<HTMLInputElement>(null);
-  const pwdCheckInput = useRef<HTMLInputElement>(null);
+  const idInput = useRef<HTMLInputElement | null>(null);
+  const pwdInput = useRef<HTMLInputElement | null>(null);
+  const pwdCheckInput = useRef<HTMLInputElement | null>(null);
 
   const onChangeRegister = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
@@ -50,9 +50,8 @@ function Register() {
     let res = await UseAxios<void>("/api/users/find", "POST", params);
 
     if (res.valid) {
-      console.log(res.message);
-    } else {
-      console.log(res.message);
+      console.log(res);
+      // setIsIdAvailable(res.message);
     }
   };
 
@@ -103,11 +102,7 @@ function Register() {
       <Form onSubmit={onCreateAuth}>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label>아이디</Form.Label>
-          {isIdAvailable ? (
-            <RegisterP>사용 가능한 아이디입니다.</RegisterP>
-          ) : (
-            <RegisterP>사용 불가능한 아이디입니다.</RegisterP>
-          )}
+          <RegisterPred>{isIdAvailable}</RegisterPred>
           <Form.Control
             ref={idInput}
             name="userId"
@@ -121,7 +116,7 @@ function Register() {
         </AButton>
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
           <Form.Label>비밀번호</Form.Label>
-          <RegisterP>비밀번호는 20자 이내로 입력해주세요.</RegisterP>
+          <RegisterPred>비밀번호는 20자 이내로 입력해주세요.</RegisterPred>
           <Form.Control
             ref={pwdInput}
             name="passWord"
@@ -133,9 +128,9 @@ function Register() {
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
           <Form.Label>비밀번호 확인</Form.Label>
           {samePwd ? (
-            <RegisterP>비밀번호가 일치하지 않습니다.</RegisterP>
+            <RegisterPred>비밀번호가 일치하지 않습니다.</RegisterPred>
           ) : (
-            <RegisterP>비밀번호가 일치 합니다.</RegisterP>
+            <RegisterPblue>비밀번호가 일치 합니다.</RegisterPblue>
           )}
           <Form.Control
             ref={pwdCheckInput}

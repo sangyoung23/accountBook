@@ -8,6 +8,7 @@ export const UseAlert = (
   icon: "warning" | "error" | "success" | "info" | "question"
 ) => {
   if (show) {
+    console.log(show, children, icon);
     withReactContent(Swal).fire({
       title: { children },
       showConfirmButton: true,
