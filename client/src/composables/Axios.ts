@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from "axios";
 interface ApiResponseType<T> {
   list: T[];
   valid: boolean;
-  message?: string;
+  message: string;
 }
 
 // 제네릭을 선언해 axios의 인자 값을 유연성 있게 처리
@@ -36,6 +36,7 @@ export const UseAxios = async <T>(
       return {
         list: [],
         valid: false,
+        message: "error",
       };
     }
   } catch (error: any) {

@@ -1,16 +1,14 @@
-import { ReactNode } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 export const UseAlert = (
   show: boolean,
-  children: ReactNode,
+  message: string,
   icon: "warning" | "error" | "success" | "info" | "question"
 ) => {
   if (show) {
-    console.log(show, children, icon);
     withReactContent(Swal).fire({
-      title: { children },
+      title: message,
       showConfirmButton: true,
       icon: icon,
     });

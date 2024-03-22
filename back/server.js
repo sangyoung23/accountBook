@@ -55,8 +55,9 @@ app.post("/api/users/find", (req, res) => {
       res.status(500).send("Internal Server Error", err);
     } else {
       if (result.length > 0) {
+        // api 호출은 성공 했으니 status는 200, 대신 success와 message 입력
         res
-          .status(401)
+          .status(200)
           .send({ success: false, message: "중복된 아이디입니다." });
       } else {
         res
